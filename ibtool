@@ -18,6 +18,9 @@ while [ $# -gt 1 ]; do
             COMPILE_PATH=$2
             shift
             ;;
+        --minimum-deployment-target)
+            shift
+            ;;
         *)
             DOCUMENT_PATH=$1
             ;;
