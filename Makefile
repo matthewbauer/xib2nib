@@ -18,8 +18,9 @@ xib2nib: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 .PHONY: install
-install: xib2nib
-	install -D $^ $(PREFIX)/bin/
+install: xib2nib ibtool
+	install -d $(PREFIX)/bin/
+	install $^ $(PREFIX)/bin/
 
 .PHONY: clean
 clean:

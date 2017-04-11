@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# ibtool --output-format human-readable-text --compile ./pinentry-mac-byaoufvkslwupjbohqmlcvdxczog/Build/Products/Release/pinentry-mac.app/Contents/Resources/Main.nib /private/tmp/nix-build-pinentry-mac-0.9.4.drv-9/pinentry-mac-0.9.4/Resources/Main.xib
+
+DOCUMENT_PATH=
+OUTPUT_FORMAT=
+DOCUMENT_PATH=
+
+while [ $# -gt 1 ]; do
+    key=$1
+
+    case $key in
+        --output-format)
+            OUTPUT_FORMAT=$2
+            shift
+            ;;
+        --compile)
+            COMPILE_PATH=$2
+            shift
+            ;;
+        *)
+            DOCUMENT_PATH=$1
+            ;;
+    esac
+    shift
+done
+
+if [ -z "$COMPILE_PATH" ]; then
+    >&2 echo "ibtool: only compile supported"
+    exit 1
+fi
+
+if [ -z "$DOCUMENT_PATH" ]; then
+    >&2 echo "ibtool: no document path"
+    exit 1
+fi
+
+./xib2nib "$DOCUMENT_PATH"" "$COMPILE_PATH"
