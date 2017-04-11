@@ -19,10 +19,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
-#include <direct.h>
 #include <assert.h>
 #include <map>
-#include <filesystem>
+#include <sys/stat.h>
 
 #include "XIBObject.h"
 #include "XIBObjectTypes.h"
@@ -30,8 +29,6 @@
 #include "NIBWriter.h"
 #include "Plist.hpp"
 #include "miscutils.h"
-
-#include "..\WBITelemetry\WBITelemetry.h"
 
 // These globals should only be employed when dealing with storyboard files (.storyboard)
 // They are only set once when we determine that the input format is a storyboard
@@ -238,29 +235,10 @@ void ConvertXIBToNib(FILE* fpOut, pugi::xml_document& doc) {
 }
 
 int main(int argc, char* argv[]) {
-    TELEMETRY_INIT(L"AIF-47606e3a-4264-4368-8f7f-ed6ec3366dca");
-
-    if (checkTelemetryOptIn()) {
-        TELEMETRY_ENABLE();
-    } else {
-        TELEMETRY_DISABLE();
-    }
-
-    std::tr2::sys::path fName(argv[1]);
-
-    TELEMETRY_SET_INTERNAL(isMSFTInternalMachine());
-    string machineID = getMachineID();
-    if (!machineID.empty()) {
-        TELEMETRY_SET_MACHINEID(machineID.c_str());
-    }
-
-    TELEMETRY_EVENT_DATA(L"Xib2NibStart", fName.filename());
-
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(argv[1]);
     if (!result) {
         printf("Error opening %s\n", argv[1]);
-        TELEMETRY_FLUSH();
         exit(2);
         return -1;
     }
@@ -269,32 +247,29 @@ int main(int argc, char* argv[]) {
     const char* type = getNodeAttrib(rootNode, "type");
     if (!type) {
         printf("Unable to find input type\n");
-        TELEMETRY_FLUSH();
         exit(3);
         return -1;
     }
     if (strcmp(rootNode.name(), "document") == 0 && strcmp(type, "com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB") == 0) {
         if (argc < 3) {
             printf("Usage: xib2nib input.storyboard <outputdir>\n");
-            TELEMETRY_FLUSH();
             exit(1);
             return -1;
         }
 
         struct stat st = { 0 };
         stat(argv[2], &st);
-        if (!(((st.st_mode) & S_IFMT) == S_IFDIR) && _mkdir(argv[2]) != 0) {
+        if (!(((st.st_mode) & S_IFMT) == S_IFDIR) && mkdir(argv[2], 777) != 0) {
             printf("Unable to create directory %s err=%d\n", argv[2], errno);
             return -1;
         }
 
         g_isStoryboard = true;
-        strcpy_s(g_outputDirectory, arraySize(g_outputDirectory), argv[2]);
+        strcpy(g_outputDirectory, argv[2]);
         ConvertStoryboard(doc);
     } else if (strstr(type, ".XIB") != NULL) {
         if (argc < 3) {
             printf("Usage: xib2nib input.xib output.nib\n");
-            TELEMETRY_FLUSH();
             exit(1);
             return -1;
         }
@@ -302,7 +277,6 @@ int main(int argc, char* argv[]) {
         FILE* fpOut = fopen(argv[2], "wb");
         if (!fpOut) {
             printf("Error opening %s\n", argv[2]);
-            TELEMETRY_FLUSH();
             exit(3);
             return -1;
         }
@@ -315,13 +289,9 @@ int main(int argc, char* argv[]) {
         fclose(fpOut);
     } else {
         printf("Unable to determine input type type=\"%s\"\n", type);
-        TELEMETRY_FLUSH();
         exit(4);
         return -1;
     }
-
-    TELEMETRY_EVENT_DATA(L"Xib2NibFinish", fName.filename());
-    TELEMETRY_FLUSH();
 
     exit(0);
 }

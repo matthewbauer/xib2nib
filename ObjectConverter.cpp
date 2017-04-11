@@ -71,8 +71,6 @@
 
 #include <assert.h>
 
-#include "..\WBITelemetry\WBITelemetry.h"
-
 #define IS_CONVERTER(newinst, classnamevar, name, type) \
     if (strcmp(classnamevar, name) == 0) {              \
         newinst = new type();                           \
@@ -209,7 +207,6 @@ XIBObject* ObjectConverter::ConverterForStoryObject(const char* className, pugi:
     IS_CONVERTER(ret, className, "customObject", ObjectConverterSwapper)
 
     if (ret == NULL) {
-        TELEMETRY_EVENT_DATA(L"UnRecognizedTag", className);
         ret = new XIBObject();
     }
 

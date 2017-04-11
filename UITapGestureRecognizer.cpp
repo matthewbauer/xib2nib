@@ -15,6 +15,7 @@
 //******************************************************************************
 
 #include "UITapGestureRecognizer.h"
+#include <stdlib.h>
 
 const int g_defaultNumberOfTapsRequired = 1;
 const int g_defaultNumberOfTouchesRequired = 1;

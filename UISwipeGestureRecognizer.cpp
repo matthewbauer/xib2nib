@@ -16,6 +16,8 @@
 
 #include "UISwipeGestureRecognizer.h"
 
+#include <stdlib.h>
+
 const UISwipeGestureRecognizerDirection g_defaultDirection = UISwipeGestureRecognizerDirectionRight;
 const int g_defaultNumberOfTouchesRequired = 1;
 

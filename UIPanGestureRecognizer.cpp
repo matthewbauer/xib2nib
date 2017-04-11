@@ -15,6 +15,7 @@
 //******************************************************************************
 
 #include "UIPanGestureRecognizer.h"
+#include <stdlib.h>
 
 const int g_defaultMinimumNumberOfTouches = 1;
 const int g_defaultMaximumNumberOfTouches = -1;

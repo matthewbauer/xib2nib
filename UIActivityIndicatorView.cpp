@@ -17,6 +17,8 @@
 #include "UIActivityIndicatorView.h"
 #include "UIColor.h"
 
+#include <stdlib.h>
+
 UIActivityIndicatorView::UIActivityIndicatorView() {
     _animating = false;
     _style = UIActivityIndicatorViewStyleInvalid;

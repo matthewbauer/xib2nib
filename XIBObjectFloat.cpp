@@ -15,6 +15,7 @@
 //******************************************************************************
 
 #include "XIBObjectFloat.h"
+#include <stdlib.h>
 
 XIBObjectFloat::XIBObjectFloat(pugi::xml_node node)
 {

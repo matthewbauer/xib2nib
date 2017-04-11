@@ -16,6 +16,7 @@
 
 #include "UITableView.h"
 #include "UIColor.h"
+#include <stdlib.h>
 
 static PropertyMapper propertyMappings[] = {
     "IBUIShowsSelectionImmediatelyOnTouchBegin", "UIShowsSelectionImmediatelyOnTouchBegin", NULL,
