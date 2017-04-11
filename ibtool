@@ -35,4 +35,4 @@ if [ -z "$DOCUMENT_PATH" ]; then
     exit 1
 fi
 
-$(dirname $0)/xib2nib "$DOCUMENT_PATH" "$COMPILE_PATH"
+$(dirname $(readlink $0))/xib2nib "$DOCUMENT_PATH" "$COMPILE_PATH"
