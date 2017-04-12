@@ -535,7 +535,8 @@ void XIBObject::ResolveReferences() {
 }
 
 XIBObject* XIBObject::findReference(const char* id) {
-    if (id == NULL) return;
+    if (id == NULL)
+      return NULL;
 
     xibList::iterator cur = _allObjs.begin();
 
