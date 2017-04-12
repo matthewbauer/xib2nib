@@ -259,7 +259,7 @@ void XIBObject::ScanXIBNode(pugi::xml_node node) {
                 AddMember(keyName, subObj);
                 subObj->_parent = this;
             } else {
-                // assert(0);
+                assert(0);
             }
         }
     }
