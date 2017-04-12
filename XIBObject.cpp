@@ -258,6 +258,10 @@ void XIBObject::ScanXIBNode(pugi::xml_node node) {
                 XIBObject* subObj = new XIBDictionary(curNode);
                 AddMember(keyName, subObj);
                 subObj->_parent = this;
+            } else if (strcmp(curNode.name(), "set") == 0) {
+                XIBObject* subObj = new XIBArray(curNode);
+                AddMember(keyName, subObj);
+                subObj->_parent = this;
             } else {
                 assert(0);
             }
