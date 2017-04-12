@@ -49,6 +49,7 @@ void UIRuntimeEventConnection::InitFromStory(XIBObject* obj) {
 
     //  Find the destination we're to plug into
     const char* destId = getAttrAndHandle("destination");
+    if (destId == NULL) return;
 
     if (strcmp(obj->_className, "action") == 0) {
         _label = getAttrAndHandle("selector");
